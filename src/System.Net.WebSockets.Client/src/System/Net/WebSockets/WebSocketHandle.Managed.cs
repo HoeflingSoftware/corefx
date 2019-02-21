@@ -124,7 +124,9 @@ namespace System.Net.WebSockets
                     handler.PooledConnectionLifetime = TimeSpan.Zero;
                     handler.CookieContainer = options.Cookies;
                     handler.UseCookies = options.Cookies != null;
+#if MARTIN_FIXME
                     handler.SslOptions.RemoteCertificateValidationCallback = options.RemoteCertificateValidationCallback;
+#endif
 
                     if (options.UseDefaultCredentials)
                     {
@@ -144,12 +146,14 @@ namespace System.Net.WebSockets
                         handler.Proxy = options.Proxy;
                     }
 
+#if MARTIN_FIXME
                     if (options._clientCertificates?.Count > 0) // use field to avoid lazily initializing the collection
                     {
                         Debug.Assert(handler.SslOptions.ClientCertificates == null);
                         handler.SslOptions.ClientCertificates = new X509Certificate2Collection();
                         handler.SslOptions.ClientCertificates.AddRange(options.ClientCertificates);
                     }
+#endif
                 }
 
                 // Issue the request.  The response must be status code 101.
